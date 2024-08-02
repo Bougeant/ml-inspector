@@ -56,3 +56,12 @@ class TestROCCurve:
         assert "Class 1 (Model 2): AUC=" in fig.data[1]["name"]
         assert fig.data[2]["name"] == "Decision threshold"
         assert fig.data[5]["name"] == "Random decision: AUC=0.50"
+
+    def test_plot_roc_curves_with_array(self, binary_predictions):
+        y, y_prob_1, _ = binary_predictions
+        class_names = {0: "Class 0", 1: "Class 1"}
+        fig = roc_curve.plot_roc_curves(y, y_prob_1, class_names=class_names)
+        assert isinstance(fig, go.Figure)
+        assert len(fig.data) == 2
+        assert "Class 1 (Predictions): AUC=" in fig.data[0]["name"]
+        assert fig.data[1]["name"] == "Random decision: AUC=0.50"
