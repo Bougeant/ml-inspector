@@ -1,7 +1,5 @@
 """ Tests for ml_toolbox.roc_curve """
 
-import os
-
 import numpy as np
 import pytest
 from plotly import graph_objs as go
