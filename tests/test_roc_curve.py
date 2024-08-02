@@ -42,3 +42,17 @@ class TestROCCurve:
         with pytest.raises(ValueError) as ve:
             roc_curve.plot_roc_curves(y, y_prob)
         assert str(ve.value) == ("ROC curves are not defined for less than two classes")
+
+    def test_plot_roc_curves_with_threshold(self, binary_predictions):
+        y, y_prob_1, y_prob_2 = binary_predictions
+        y_prob = {"Model 1": y_prob_1, "Model 2": y_prob_2}
+        class_names = {0: "Class 0", 1: "Class 1"}
+        fig = roc_curve.plot_roc_curves(
+            y, y_prob, class_names=class_names, decision_threshold={"Model 2": 0.4}
+        )
+        assert isinstance(fig, go.Figure)
+        assert len(fig.data) == 6
+        assert "Class 1 (Model 1): AUC=" in fig.data[0]["name"]
+        assert "Class 1 (Model 2): AUC=" in fig.data[1]["name"]
+        assert fig.data[2]["name"] == "Decision threshold"
+        assert fig.data[5]["name"] == "Random decision: AUC=0.50"
