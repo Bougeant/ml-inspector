@@ -22,7 +22,7 @@ Homepage = "https://github.com/Bougeant/ml-toolbox"
 
 
 [project.optional-dependencies]
-dev = ["pytest", "black", "isort", "flake8"]
+dev = ["pytest", "black", "isort", "flake8", "pytest-cov"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
