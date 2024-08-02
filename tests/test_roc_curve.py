@@ -1,0 +1,44 @@
+""" Tests for ml_toolbox.roc_curve """
+
+import os
+
+import numpy as np
+import pytest
+from plotly import graph_objs as go
+
+from ml_toolbox import roc_curve
+
+
+class TestROCCurve:
+    def test_plot_roc_curves_binary(self, binary_predictions):
+        y, y_prob_1, y_prob_2 = binary_predictions
+        y_prob = {"Model 1": y_prob_1, "Model 2": y_prob_2}
+        class_names = {0: "Class 0", 1: "Class 1"}
+        fig = roc_curve.plot_roc_curves(y, y_prob, class_names=class_names)
+        assert isinstance(fig, go.Figure)
+        assert len(fig.data) == 3
+        assert "Class 1 (Model 1): AUC=" in fig.data[0]["name"]
+        assert "Class 1 (Model 2): AUC=" in fig.data[1]["name"]
+        assert fig.data[2]["name"] == "Random decision: AUC=0.50"
+
+    def test_plot_roc_curves_multi_class(self, multiclass_predictions):
+        y, y_prob_1, y_prob_2 = multiclass_predictions
+        y_prob = {"Training": y_prob_1, "Test": y_prob_2}
+        class_names = {0: "Class 0", 1: "Class 1", 2: "Class 2", 3: "Class 3"}
+        fig = roc_curve.plot_roc_curves(y, y_prob, class_names=class_names)
+        assert isinstance(fig, go.Figure)
+        assert len(fig.data) == 11
+        assert "Class 0 (Training): AUC=" in fig.data[0]["name"]
+        assert "Class 1 (Training): AUC=" in fig.data[1]["name"]
+        assert "Class 2 (Training): AUC=" in fig.data[2]["name"]
+        assert "Class 3 (Training): AUC=" in fig.data[3]["name"]
+        assert "Micro-average ROC Curve (Training): AUC=" in fig.data[4]["name"]
+        assert "Class 0 (Test): AUC=" in fig.data[5]["name"]
+
+    def test_plot_roc_curves_error_single_class(self, binary_predictions):
+        y, y_prob_1, y_prob_2 = binary_predictions
+        y = np.array([0, 0, 0, 0, 0])
+        y_prob = {"Model 1": y_prob_1, "Model 2": y_prob_2}
+        with pytest.raises(ValueError) as ve:
+            roc_curve.plot_roc_curves(y, y_prob)
+        assert str(ve.value) == ("ROC curves are not defined for less than two classes")
