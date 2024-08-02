@@ -36,6 +36,7 @@ def plot_roc_curves(y_true, y_prob, class_names=None, decision_threshold=None):
         The figure containing the ROC curves.
     """
     decision_threshold = {} if decision_threshold is None else decision_threshold
+    y_prob = {"Predictions": y_prob} if isinstance(y_prob, np.ndarray) else y_prob
     classes = np.unique(y_true)
     if len(classes) < 2:
         raise ValueError("ROC curves are not defined for less than two classes")
