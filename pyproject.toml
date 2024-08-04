@@ -1,5 +1,5 @@
 [project]
-name = "ml-toolbox"
+name = "ml-inspector"
 version = "0.0.1"
 description = "User friendly tools to understand machine learning models"
 authors = [{ name="Olivier Bougeant", email="olivierbougeant@gmail.com" }]
@@ -18,7 +18,7 @@ dependencies = [
 
 
 [project.urls]
-Homepage = "https://github.com/Bougeant/ml-toolbox"
+Homepage = "https://github.com/Bougeant/ml-inspector"
 
 
 [project.optional-dependencies]

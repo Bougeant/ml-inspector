@@ -28,9 +28,9 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Lint with black, isort and flake8
       run: |
-        black ml_toolbox tests --check --verbose
-        isort ml_toolbox tests --check-only
-        flake8 ml_toolbox tests --count --max-complexity=10  --max-line-length=88 --show-source --statistics    
+        black ml_inspector tests --check --verbose
+        isort ml_inspector tests --check-only
+        flake8 ml_inspector tests --count --max-complexity=10  --max-line-length=88 --show-source --statistics
     - name: Test with pytest
       run: |
-        pytest --cov=ml_toolbox --capture=no --verbose tests --cov-report xml:coverage/coverage.xml --cov-report term-missing
+        pytest --cov=ml_inspector --capture=no --verbose tests --cov-report xml:coverage/coverage.xml --cov-report term-missing

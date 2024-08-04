@@ -1,10 +1,10 @@
-""" Tests for ml_toolbox.roc_curve """
+""" Tests for ml_inspector.roc_curve """
 
 import numpy as np
 import pytest
 from plotly import graph_objs as go
 
-from ml_toolbox import roc_curve
+from ml_inspector import roc_curve
 
 
 class TestROCCurve:
