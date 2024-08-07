@@ -13,6 +13,11 @@ jupyter:
     name: python3
 ---
 
+```python
+%load_ext autoreload
+%autoreload 2
+```
+
 # Binary classification model
 
 ```python
@@ -22,7 +27,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_predict
 
-from ml_inspector import roc_curve
+from ml_inspector import plot_precision_recall_curves, plot_roc_curves, plot_gain_curves
 ```
 
 ## Load classification dataset
@@ -37,6 +42,10 @@ X = pd.DataFrame(data=dataset["data"], columns=dataset["feature_names"])
 
 ```python
 y = pd.Series(dataset["target"])
+```
+
+```python
+class_names = dataset["target_names"]
 ```
 
 ## Train binary classification model
@@ -58,12 +67,20 @@ y_prob = {
 }
 ```
 
-## Plot ROC curves
+## ROC curves
 
 ```python
-roc_curve.plot_roc_curves(y, y_prob, class_names=dataset["target_names"], decision_threshold={"Cross-Validation": 0.5})
+plot_roc_curves(y, y_prob, class_names, decision_threshold=0.5)
 ```
 
+## Precision-Recall curves
+
 ```python
-##
+plot_precision_recall_curves(y, y_prob, class_names, decision_threshold=0.5)
+```
+
+## Gain curves
+
+```python
+plot_gain_curves(y, y_prob, class_names, decision_threshold=0.5)
 ```
