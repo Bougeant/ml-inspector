@@ -32,7 +32,7 @@ class MetricsCurves:
         y_true: np.ndarray,
         y_prob: dict[str, np.ndarray],
         class_names: dict | None = None,
-        decision_threshold: dict | None = None,
+        decision_threshold: float | None = None,
     ) -> go.Figure:
         """Plots the metrics curves based on the ground truth and predictions.
 
@@ -40,16 +40,16 @@ class MetricsCurves:
             y_true (array): An array containing the true outcomes.
             y_prob (dict): A dictionary containing the predicted probablities for
                 each class, together with their labels. For example:
-                    {"Train": [[0.3, 0.7], ...], "Test": [[0.4, 0.6], ...]}
+                {"Train": [[0.3, 0.7], ...], "Test": [[0.4, 0.6], ...]}
                 In case of binary classification, only the probablities
                 for the positive class may be provided. For example:
-                    {"Model 1": [0.1, 0.4, ...], "Model 2": [0.2, 0.3, ...]}
+                {"Model 1": [0.1, 0.4, ...], "Model 2": [0.2, 0.3, ...]}
                 Alternatively, a single array may be provided. For example:
-                    [[0.1, 0.9], [0.2, 0.8], ...]
+                [[0.1, 0.9], [0.2, 0.8], ...]
             class_names (dict): A dictionary containing the name to display
                 for each class. For example: {0: "Class 0", 1: "Class 1", ...}).
             decision_threshold (float): The probablity above which the class
-            is predicted (for binary classification models only).
+                is predicted (for binary classification models only).
         """
         decision_threshold = {} if decision_threshold is None else decision_threshold
         y_prob = {"Predictions": y_prob} if isinstance(y_prob, np.ndarray) else y_prob
