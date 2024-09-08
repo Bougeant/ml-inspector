@@ -51,7 +51,6 @@ class MetricsCurves:
             decision_threshold (float): The probablity above which the class
                 is predicted (for binary classification models only).
         """
-        decision_threshold = {} if decision_threshold is None else decision_threshold
         y_prob = {"Predictions": y_prob} if isinstance(y_prob, np.ndarray) else y_prob
         classes = np.unique(y_true)
         if len(classes) < 2:
@@ -132,8 +131,8 @@ class MetricsCurves:
             curves (dict): A dictionary containing the metrics curves to display.
             class_names (dict): A dictionary containing the name to display for each
                 class. For example: {1: "Class 1", 2: "Class 2", ...}.
-            decision_threshold (float): The probablity above which the class is
-                predicted (for binary classification models only).
+            threshold (float): The probablity above which the class is predicted
+                (for binary classification models only).
 
         Returns:
             go.Figure: The figure containing the metrics curves.
@@ -166,9 +165,9 @@ class MetricsCurves:
         for j, type_curves in enumerate(curves):
             for i, c in enumerate(curves[type_curves]):
                 curve = curves[type_curves][c]
-                if threshold is not None:
+                color = DEFAULT_PLOTLY_COLORS[i]
+                if threshold:
                     showlegend = j == 0 and i == 0
-                    color = DEFAULT_PLOTLY_COLORS[i]
                     data.append(
                         self.plot_threshold(
                             curve, threshold, color, showlegend, legendgroup=str(c)
