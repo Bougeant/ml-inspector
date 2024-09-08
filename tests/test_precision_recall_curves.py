@@ -19,7 +19,7 @@ class TestPRCurve:
         assert fig.data[1]["name"] == "Class 1 (Model 2): AUC=0.67"
         assert fig.data[2]["name"] == "Random decision: AUC=0.40"
 
-    def test_plot_roc_curves_multi_class(self, multiclass_predictions):
+    def test_plot_pr_curves_multi_class(self, multiclass_predictions):
         y, y_prob_1, y_prob_2 = multiclass_predictions
         y_prob = {"Training": y_prob_1, "Test": y_prob_2}
         class_names = {0: "Class 0", 1: "Class 1", 2: "Class 2", 3: "Class 3"}
@@ -36,7 +36,7 @@ class TestPRCurve:
         assert fig.data[5]["name"] == "Class 0 (Test): AUC=0.75"
         assert fig.data[-1]["name"] == "Random decision: AUC=0.25"
 
-    def test_plot_roc_curves_error_single_class(self, binary_predictions):
+    def test_plot_pr_curves_error_single_class(self, binary_predictions):
         y, y_prob_1, y_prob_2 = binary_predictions
         y = np.array([0, 0, 0, 0, 0])
         y_prob = {"Model 1": y_prob_1, "Model 2": y_prob_2}
@@ -46,7 +46,7 @@ class TestPRCurve:
             "Metrics curves are not defined for less than two classes"
         )
 
-    def test_plot_roc_curves_with_threshold(self, binary_predictions):
+    def test_plot_pr_curves_with_threshold(self, binary_predictions):
         y, y_prob_1, y_prob_2 = binary_predictions
         y_prob = {"Model 1": y_prob_1, "Model 2": y_prob_2}
         class_names = {0: "Class 0", 1: "Class 1"}
@@ -61,7 +61,7 @@ class TestPRCurve:
         assert fig.data[3]["name"] == "Class 1 (Model 2): AUC=0.67"
         assert fig.data[4]["name"] == "Random decision: AUC=0.40"
 
-    def test_plot_roc_curves_with_array(self, binary_predictions):
+    def test_plot_pr_curves_with_array(self, binary_predictions):
         y, y_prob_1, _ = binary_predictions
         class_names = {0: "Class 0", 1: "Class 1"}
         fig = plot_precision_recall_curves(y, y_prob_1, class_names=class_names)
