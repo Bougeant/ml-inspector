@@ -30,7 +30,7 @@ class MetricsCurves:
     def plot_curves(
         self,
         y_true: np.ndarray,
-        y_prob: dict[str, np.ndarray],
+        y_prob: dict[str, np.ndarray] | np.ndarray,
         class_names: dict | None = None,
         decision_threshold: float | None = None,
     ) -> go.Figure:
