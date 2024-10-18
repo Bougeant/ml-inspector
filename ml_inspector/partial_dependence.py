@@ -110,13 +110,7 @@ def partial_dependence(
 
 
 def plot_partial_dependence(
-    estimator,
-    X,
-    feature,
-    max_nb_points=20,
-    max_sample=100,
-    class_names=None,
-    **kwargs,
+    estimator, X, max_nb_points=20, max_sample=100, class_names=None, **kwargs
 ):
     """Plots the partial dependence of an estimator on a selected feature as well
     as the confidence interval for the dependence based on a sample of rows
@@ -127,8 +121,6 @@ def plot_partial_dependence(
         The estimator for which to assess the partial dependence on a feature.
     :param pandas.DataFrame X:
         A pandas DataFrame containing the training data.
-    :param str feature:
-        The feature for which to assess the partial dependence of the estimator.
     :param int max_nb_points:
         The maximum number feature values.
     :param int max_sample:
@@ -142,26 +134,36 @@ def plot_partial_dependence(
     :param bool display:
         A flag to display the partial dependence plot.
     """
-    feature_values, all_predictions, all_impacts = partial_dependence(
-        estimator,
-        X,
-        feature,
-        max_nb_points=max_nb_points,
-        max_sample=max_sample,
-        **kwargs,
-    )
-    if all_predictions[0].ndim == 2:
-        if not class_names:
-            class_names = {c: f"Class {c}" for c in estimator.classes_}
-        class_names = {i: class_names[i] for i in estimator.classes_}
-    plot_data = partial_dependence_plot_data(feature_values, all_impacts, class_names)
-    layout = partial_dependence_plot_layout(feature)
+    plot_data = []
+    visible = True
+    for feature in X.columns:
+        feature_values, all_predictions, all_impacts = partial_dependence(
+            estimator,
+            X,
+            feature,
+            max_nb_points=max_nb_points,
+            max_sample=max_sample,
+            **kwargs,
+        )
+        if all_predictions[0].ndim == 2:
+            if not class_names:
+                class_names = {c: f"Class {c}" for c in estimator.classes_}
+            class_names = {i: class_names[i] for i in estimator.classes_}
+        plot_data.extend(
+            partial_dependence_plot_data(
+                feature_values, all_impacts, class_names, visible=visible
+            )
+        )
+        visible = False
+    layout = partial_dependence_plot_layout(X.columns[0])
     fig = go.Figure(data=plot_data, layout=layout)
-    fig = add_feature_selection_button(fig, X)
+    fig = add_feature_selection_button(fig, X, max_sample)
     return fig
 
 
-def partial_dependence_plot_data(feature_values, all_impacts, class_names=None, ci=95):
+def partial_dependence_plot_data(
+    feature_values, all_impacts, class_names=None, ci=95, visible=True
+):
     """Returns the data for the partial dependence plot and its confidence interval
     as well as the individual ceteris paribus plots.
 
@@ -179,17 +181,21 @@ def partial_dependence_plot_data(feature_values, all_impacts, class_names=None, 
     :param float ci:
         The confidence interval to display for the partial dependence plot (in
         percents).
+    :param bool visible:
+        A flag to display the individual ceteris paribus plots.
 
     :returns list:
         A list of plotly traces containing the partial dependence plot data.
     """
     data = []
-    data.extend(add_individual_impact_plots(feature_values, all_impacts))
-    data.extend(add_average_impact_plots(feature_values, all_impacts, class_names, ci))
+    data.extend(add_individual_impact_plots(feature_values, all_impacts, visible))
+    data.extend(
+        add_average_impact_plots(feature_values, all_impacts, class_names, ci, visible)
+    )
     return data
 
 
-def add_individual_impact_plots(feature_values, all_impacts):
+def add_individual_impact_plots(feature_values, all_impacts, visible):
     """Generates the individual sample partial dependence plots.
 
     :param list feature_values:
@@ -215,12 +221,13 @@ def add_individual_impact_plots(feature_values, all_impacts):
                     legendgroup="ceteris_paribus",
                     opacity=0.5,
                     hoverinfo="skip",
+                    visible=visible,
                 )
             )
     return data
 
 
-def add_average_impact_plots(feature_values, all_impacts, class_names, ci):
+def add_average_impact_plots(feature_values, all_impacts, class_names, ci, visible):
     """Add the average partial dependence and confidence interval plots. If there is
     more than two classes, one plot per class is created.
 
@@ -261,6 +268,7 @@ def add_average_impact_plots(feature_values, all_impacts, class_names, ci):
                     opacity=0.5,
                     legendgroup=i,
                     showlegend=False,
+                    visible=visible,
                 ),
                 go.Scatter(
                     x=feature_values,
@@ -272,6 +280,7 @@ def add_average_impact_plots(feature_values, all_impacts, class_names, ci):
                     fill="tonexty",
                     opacity=0.5,
                     legendgroup=i,
+                    visible=visible,
                 ),
                 go.Scatter(
                     x=feature_values,
@@ -281,6 +290,7 @@ def add_average_impact_plots(feature_values, all_impacts, class_names, ci):
                     line={"width": 5},
                     name="Average partial dependence" + f"{name}",
                     legendgroup=i,
+                    visible=visible,
                 ),
             ]
         )
@@ -330,9 +340,17 @@ def remove_outliers(series, q_min=0.01, q_max=0.99, sigma_factor=0):
     return series[series.between(lower_limit, upper_limit)].copy()
 
 
-def add_feature_selection_button(fig, X):
+def add_feature_selection_button(fig, X, max_sample):
+    repeat = max_sample + 3
     buttons = [
-        {"args": [{"visible": [True, False]}], "label": col, "method": "restyle"}
+        {
+            "args": [
+                {"visible": [c == col for c in X.columns for _ in range(repeat)]},
+                {"title": col, "xaxis": {"title": f"Value of {col}"}},
+            ],
+            "label": col,
+            "method": "update",
+        }
         for col in X.columns
     ]
     fig.update_layout(
