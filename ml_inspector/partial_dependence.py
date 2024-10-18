@@ -1,4 +1,4 @@
-""" Functions to display partial depencency plots. """
+""" Functions to display partial depencence plots. """
 
 import numpy as np
 import pandas as pd
@@ -166,7 +166,7 @@ def partial_dependence_plot_data(feature_values, all_impacts, class_names=None, 
     as well as the individual ceteris paribus plots.
 
     :param list feature_values:
-        The list of feature values for the partial depencency plot.
+        The list of feature values for the partial dependence plot.
     :param list all_predictions:
         A list of arrays containing the predictions for each feature value and
         for each row.
@@ -181,7 +181,7 @@ def partial_dependence_plot_data(feature_values, all_impacts, class_names=None, 
         percents).
 
     :returns list:
-        A list of plotly traces containing the partial depencency plot data.
+        A list of plotly traces containing the partial dependence plot data.
     """
     data = []
     data.extend(add_individual_impact_plots(feature_values, all_impacts))
@@ -190,16 +190,16 @@ def partial_dependence_plot_data(feature_values, all_impacts, class_names=None, 
 
 
 def add_individual_impact_plots(feature_values, all_impacts):
-    """Generates the individual sample partial depencency plots.
+    """Generates the individual sample partial dependence plots.
 
     :param list feature_values:
-        The list of feature values for the partial depencency plot.
+        The list of feature values for the partial dependence plot.
     :param list all_impacts:
         A list of arrays containing the impact of the feature relative to the
         average prediction for each feature value and for each row.
 
     :returns list:
-        A list of plotly traces containing the partial depencency plot data.
+        A list of plotly traces containing the partial dependence plot data.
     """
     data = []
     if all_impacts[0].ndim == 1:
@@ -221,11 +221,11 @@ def add_individual_impact_plots(feature_values, all_impacts):
 
 
 def add_average_impact_plots(feature_values, all_impacts, class_names, ci):
-    """Add the average partial depencency and confidence interval plots. If there is
+    """Add the average partial dependence and confidence interval plots. If there is
     more than two classes, one plot per class is created.
 
     :param list feature_values:
-        The list of feature values for the partial depencency plot.
+        The list of feature values for the partial dependence plot.
     :param list all_predictions:
         A list of arrays containing the predictions for each feature value and
         for each row.
@@ -237,7 +237,7 @@ def add_average_impact_plots(feature_values, all_impacts, class_names, ci):
         percents).
 
     :returns list:
-        A list of plotly traces containing the partial depencency plot data.
+        A list of plotly traces containing the partial dependence plot data.
     """
     data = []
     if all_impacts[0].ndim == 1:
@@ -291,7 +291,7 @@ def partial_dependence_plot_layout(feature):
     """Returns the layout for the partial dependence plot.
 
     :param str feature:
-        The feature for which to create the partial depencency plot.
+        The feature for which to create the partial dependence plot.
 
     :returns go.Layout:
         The layout for the partial dependence plot.
