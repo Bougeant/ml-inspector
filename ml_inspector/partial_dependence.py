@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from plotly import graph_objs as go
 from plotly.colors import DEFAULT_PLOTLY_COLORS
+from tqdm.auto import tqdm
 
 
 def select_feature_values(X, feature, max_nb_points):
@@ -136,7 +137,7 @@ def plot_partial_dependence(
     """
     plot_data = []
     visible = True
-    for feature in X.columns:
+    for feature in tqdm(X.columns, desc="Calculating partial dependence"):
         feature_values, all_predictions, all_impacts = partial_dependence(
             estimator,
             X,
