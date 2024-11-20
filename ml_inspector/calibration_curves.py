@@ -62,11 +62,9 @@ def calculate_calibration_curves(
     """
     df = pd.DataFrame({"y_true": y_true, "y_prob": [x for x in y_prob]})
     cal_curve = {}
-    for c in class_names:
-        proba = [x[c] for x in y_prob]
-        min_proba = np.min(proba) if proba else 0
-        max_proba = np.max(proba) if proba else 1
-        bins = np.linspace(min_proba, max_proba, num=n_bins + 1)
+    for i, c in enumerate(class_names):
+        proba = [x[i] for x in y_prob]
+        bins = np.linspace(0, 1, num=n_bins + 1)
         proba_bins = pd.cut(
             proba, bins=bins, labels=(bins[:-1] + bins[1:]) / 2, include_lowest=True
         ).astype(float)
