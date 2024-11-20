@@ -1,5 +1,6 @@
 from .calibration_curves import plot_calibration_curves
 from .confusion_matrix import plot_confusion_matrix
+from .feature_importance import plot_feature_importance
 from .gain_curves import plot_gain_curves
 from .learning_curves import plot_learning_curves
 from .partial_dependence import plot_partial_dependence
@@ -16,4 +17,5 @@ __all__ = [
     "plot_precision_recall_curves",
     "plot_classification_predictions",
     "plot_roc_curves",
+    "plot_feature_importance",
 ]

@@ -99,9 +99,7 @@ def multiclass_distribution(y_true, y_pred, class_names, points):
     plots_data = []
     for i, pred_class in enumerate(class_names):
         for j, true_class in enumerate(class_names):
-            y_class = [
-                pc[pred_class] for tc, pc in zip(y_true, y_pred) if tc == true_class
-            ]
+            y_class = [pc[i] for tc, pc in zip(y_true, y_pred) if tc == true_class]
             plots_data.append(
                 go.Violin(
                     y=y_class,
@@ -136,7 +134,7 @@ def create_classification_distribution_layout(class_names):
     else:
         for i, name in enumerate(class_names.values()):
             domain = [1 - (i + 1) / len(class_names), 1 - i / len(class_names) - 0.02]
-            yaxes["yaxis{i+1}"] = {
+            yaxes[f"yaxis{i+1}"] = {
                 "domain": domain,
                 "range": [0, 1],
                 "title": f"P({name})",
