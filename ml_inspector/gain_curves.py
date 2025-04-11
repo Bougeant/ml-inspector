@@ -31,7 +31,7 @@ def calculate_gain_curve(y_true: np.ndarray, y_prob: np.ndarray) -> tuple:
     recalls = y_true.cumsum() / y_true.sum()
     fractions = [i / len(y_true) for i in range(len(y_true))]
     thresholds = y_prob
-    return np.array(fractions).round(6), np.array(recalls), np.array(thresholds)
+    return np.array(fractions).round(3), np.array(recalls), np.array(thresholds)
 
 
 class GainCurves(MetricsCurves):
