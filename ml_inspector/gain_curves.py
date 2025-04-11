@@ -26,8 +26,8 @@ def calculate_gain_curve(y_true: np.ndarray, y_prob: np.ndarray) -> tuple:
         * the fractions of detected positive class samples
         * the corresponding thresholds
     """
-    y_prob = pd.Series(np.array(y_prob)).sort_values(ascending=False)
-    y_true = pd.Series(np.array(y_true)).reindex(y_prob.index).values
+    y_prob = pd.Series(np.array(y_prob)).sort_values(ascending=False).round(6)
+    y_true = pd.Series(np.array(y_true)).reindex(y_prob.index).round(6)
     recalls = y_true.cumsum() / y_true.sum()
     fractions = [i / len(y_true) for i in range(len(y_true))]
     thresholds = y_prob
