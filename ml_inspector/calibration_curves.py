@@ -18,8 +18,8 @@ def plot_calibration_curves(
     ci: float = 0.90,
     n_bins: int = 10,
 ):
-    """Plots the calibration curve for predicted vs actual class probabilities for a binary
-    or multi-class classification model.
+    """Plots the calibration curve for predicted vs actual class probabilities for a
+    binary or multi-class classification model.
 
     Args:
         y_true (array): An array containing the true outcomes.

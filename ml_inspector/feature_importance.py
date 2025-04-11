@@ -2,7 +2,6 @@ import logging
 
 import numpy as np
 import plotly.graph_objs as go
-from sklearn.metrics import make_scorer
 from sklearn.model_selection import cross_val_score
 from tqdm.auto import tqdm
 
