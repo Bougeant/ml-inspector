@@ -1,4 +1,4 @@
-""" Tests for ml_inspector.precision_recall_curves """
+"""Tests for ml_inspector.precision_recall_curves"""
 
 import numpy as np
 import pytest

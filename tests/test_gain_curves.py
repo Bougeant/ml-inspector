@@ -1,4 +1,4 @@
-""" Tests for ml_inspector.gain_curves """
+"""Tests for ml_inspector.gain_curves"""
 
 import numpy as np
 import pytest

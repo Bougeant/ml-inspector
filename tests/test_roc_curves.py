@@ -1,4 +1,4 @@
-""" Tests for ml_inspector.roc_curve """
+"""Tests for ml_inspector.roc_curve"""
 
 import numpy as np
 import pytest
