@@ -6,6 +6,7 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
+from sklearn.metrics import roc_curve
 
 from ml_inspector._metrics_curves import MetricsCurves
 
@@ -26,12 +27,12 @@ def calculate_gain_curve(y_true: np.ndarray, y_prob: np.ndarray) -> tuple:
         * the fractions of detected positive class samples
         * the corresponding thresholds
     """
-    y_prob = pd.Series(np.array(y_prob)).sort_values(ascending=False).round(6)
-    y_true = pd.Series(np.array(y_true)).reindex(y_prob.index).round(6)
+    y_prob = pd.Series(np.array(y_prob)).sort_values(ascending=False)
+    y_true = pd.Series(np.array(y_true)).reindex(y_prob.index)
     recalls = y_true.cumsum() / y_true.sum()
     fractions = [i / len(y_true) for i in range(len(y_true))]
     thresholds = y_prob
-    return np.array(fractions), np.array(recalls), np.array(thresholds)
+    return np.array(fractions).round(6), np.array(recalls), np.array(thresholds)
 
 
 class GainCurves(MetricsCurves):
@@ -85,4 +86,5 @@ def plot_gain_curves(y_true, y_prob, class_names=None, decision_threshold=None):
         The figure containing the gain curves.
     """
     fig = GainCurves().plot_curves(y_true, y_prob, class_names, decision_threshold)
+    return fig
     return fig
