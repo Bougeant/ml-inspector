@@ -6,7 +6,6 @@ from typing import Callable
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
-from sklearn.metrics import roc_curve
 
 from ml_inspector._metrics_curves import MetricsCurves
 
