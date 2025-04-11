@@ -1,4 +1,4 @@
-""" Gain curves for classification models. """
+"""Gain curves for classification models."""
 
 import logging
 from typing import Callable

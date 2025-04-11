@@ -1,4 +1,4 @@
-""" ROC curves for classification models. """
+"""ROC curves for classification models."""
 
 import logging
 from typing import Callable

@@ -1,4 +1,4 @@
-""" Functions for plotting confusion matrix for classification models. """
+"""Functions for plotting confusion matrix for classification models."""
 
 import numpy as np
 import plotly.graph_objs as go

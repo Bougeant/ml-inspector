@@ -1,4 +1,4 @@
-""" Functions to display partial depencence plots. """
+"""Functions to display partial depencence plots."""
 
 import numpy as np
 import pandas as pd

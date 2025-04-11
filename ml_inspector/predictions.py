@@ -1,4 +1,4 @@
-""" Functions to display machine learning model predictions. """
+"""Functions to display machine learning model predictions."""
 
 import numpy as np
 from plotly import graph_objs as go

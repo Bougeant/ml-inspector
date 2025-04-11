@@ -1,4 +1,4 @@
-""" Calibration curves for classification models. """
+"""Calibration curves for classification models."""
 
 import logging
 

@@ -1,4 +1,4 @@
-""" Learning curves for classification and regression models. """
+"""Learning curves for classification and regression models."""
 
 import logging
 

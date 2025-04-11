@@ -1,4 +1,4 @@
-""" Precision-Recall curves for classification models. """
+"""Precision-Recall curves for classification models."""
 
 import logging
 from typing import Callable
