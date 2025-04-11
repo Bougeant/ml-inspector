@@ -27,7 +27,9 @@ def calculate_gain_curve(y_true: np.ndarray, y_prob: np.ndarray) -> tuple:
         * the corresponding thresholds
     """
     y_prob = pd.Series(np.array(y_prob)).sort_values(ascending=False)
-    y_true = pd.Series(np.array(y_true)).reindex(y_prob.index)
+    y_true = pd.Series(np.array(y_true).astype(int)).reindex_like(y_prob)
+    print("y_prob", y_prob)
+    print("y_true", y_true)
     recalls = y_true.cumsum() / y_true.sum()
     fractions = [i / len(y_true) for i in range(len(y_true))]
     thresholds = y_prob
@@ -85,5 +87,4 @@ def plot_gain_curves(y_true, y_prob, class_names=None, decision_threshold=None):
         The figure containing the gain curves.
     """
     fig = GainCurves().plot_curves(y_true, y_prob, class_names, decision_threshold)
-    return fig
     return fig
