@@ -118,8 +118,6 @@ class MetricsCurves:
         """
         curve_data = {}
         for i, c in enumerate(classes):
-            if i == 0:
-                print(y_true == c, y_prob[:, i])
             curve_data[c] = self.curve_function(y_true == c, y_prob[:, i])
         curve_data["Average"] = self.curve_function(
             label_binarize(y_true, classes=classes).ravel(), y_prob.ravel()

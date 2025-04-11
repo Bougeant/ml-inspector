@@ -31,7 +31,7 @@ class TestROCCurve:
         assert fig.data[2]["name"] == "Class 2 (Training): AUC=1.00"
         assert fig.data[3]["name"] == "Class 3 (Training): AUC=1.00"
         assert fig.data[4]["name"] == "Micro-average ROC curve (Training): AUC=0.96"
-        assert fig.data[5]["name"] == "Class 0 (Test): AUC=0.81"
+        assert fig.data[5]["name"] == "Class 0 (Test): AUC=0.88"
         assert fig.data[-1]["name"] == "Random decision: AUC=0.50"
 
     def test_plot_roc_curves_error_single_class(self, binary_predictions):

@@ -27,13 +27,11 @@ def calculate_gain_curve(y_true: np.ndarray, y_prob: np.ndarray) -> tuple:
         * the corresponding thresholds
     """
     y_prob = pd.Series(np.array(y_prob)).sort_values(ascending=False)
-    y_true = pd.Series(np.array(y_true).astype(int)).reindex_like(y_prob)
-    print("y_prob", y_prob)
-    print("y_true", y_true)
+    y_true = pd.Series(np.array(y_true)).reindex_like(y_prob)
     recalls = y_true.cumsum() / y_true.sum()
     fractions = [i / len(y_true) for i in range(len(y_true))]
     thresholds = y_prob
-    return np.array(fractions).round(3), np.array(recalls), np.array(thresholds)
+    return np.array(fractions), np.array(recalls), np.array(thresholds)
 
 
 class GainCurves(MetricsCurves):

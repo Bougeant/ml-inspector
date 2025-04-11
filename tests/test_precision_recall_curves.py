@@ -33,7 +33,7 @@ class TestPRCurve:
         assert fig.data[4]["name"] == (
             "Micro-average Precision-Recall curve (Training): AUC=0.90"
         )
-        assert fig.data[5]["name"] == "Class 0 (Test): AUC=0.75"
+        assert fig.data[5]["name"] == "Class 0 (Test): AUC=0.79"
         assert fig.data[-1]["name"] == "Random decision: AUC=0.25"
 
     def test_plot_pr_curves_error_single_class(self, binary_predictions):

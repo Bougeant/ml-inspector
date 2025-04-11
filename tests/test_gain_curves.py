@@ -32,7 +32,7 @@ class TestGainCurve:
         assert fig.data[3]["name"] == "Class 3 (Training): AUC=0.83"
         assert fig.data[4]["name"] == "Micro-average Gain curve (Training): AUC=0.84"
         print(fig.data[5])
-        assert fig.data[5]["name"] == "Class 0 (Test): AUC=0.72"
+        assert fig.data[5]["name"] == "Class 0 (Test): AUC=0.71"
         assert fig.data[-1]["name"] == "Random decision: AUC=0.50"
 
     def test_plot_gain_curves_error_single_class(self, binary_predictions):
