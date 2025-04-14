@@ -111,7 +111,13 @@ def partial_dependence(
 
 
 def plot_partial_dependence(
-    estimator, X, max_nb_points=20, max_sample=100, class_names=None, **kwargs
+    estimator,
+    X,
+    features=None,
+    max_nb_points=20,
+    max_sample=100,
+    class_names=None,
+    **kwargs,
 ):
     """Plots the partial dependence of an estimator on a selected feature as well
     as the confidence interval for the dependence based on a sample of rows
@@ -122,6 +128,8 @@ def plot_partial_dependence(
         The estimator for which to assess the partial dependence on a feature.
     :param pandas.DataFrame X:
         A pandas DataFrame containing the training data.
+    :param list features:
+        A list of features for which to assess the partial dependence of the model.
     :param int max_nb_points:
         The maximum number feature values.
     :param int max_sample:
@@ -137,7 +145,9 @@ def plot_partial_dependence(
     """
     plot_data = []
     visible = True
-    for feature in tqdm(X.columns, desc="Calculating partial dependence"):
+    if features is not None:
+        features = X.columns
+    for feature in tqdm(features, desc="Calculating partial dependence"):
         feature_values, all_predictions, all_impacts = partial_dependence(
             estimator,
             X,
