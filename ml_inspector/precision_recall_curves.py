@@ -19,8 +19,9 @@ class PRCurves(MetricsCurves):
         curve_function: Callable = precision_recall_curve,
         xaxis: dict = {"index": 1, "name": "Recall", "range": (0, 1)},
         yaxis: dict = {"index": 0, "name": "Precision", "range": (0, 1)},
+        reverse_thresholds: bool = True,
     ) -> None:
-        super().__init__(curve_name, curve_function, xaxis, yaxis)
+        super().__init__(curve_name, curve_function, xaxis, yaxis, reverse_thresholds)
 
     def add_random_decision(self, y_vals, *args, **kwargs) -> go.Scatter:
         """Returns the metrics values for a random decision.

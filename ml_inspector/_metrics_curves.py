@@ -20,12 +20,18 @@ class MetricsCurves:
     """
 
     def __init__(
-        self, curve_name: str, curve_function: Callable, xaxis: dict, yaxis: dict
+        self,
+        curve_name: str,
+        curve_function: Callable,
+        xaxis: dict,
+        yaxis: dict,
+        reverse_thresholds: bool = False,
     ) -> None:
         self.curve_name = curve_name
         self.curve_function = curve_function
         self.xaxis = xaxis
         self.yaxis = yaxis
+        self.reverse_thresholds = reverse_thresholds
 
     def plot_curves(
         self,
@@ -204,6 +210,8 @@ class MetricsCurves:
         y_vals = curve[self.yaxis["index"]]
         thresholds = curve[2]
         index = len([i for i in thresholds if i >= threshold])
+        if self.reverse_thresholds:
+            index = len(thresholds) - index
         y = y_vals[[index - 1]]
         x = x_vals[[index - 1]]
         params = {
