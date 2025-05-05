@@ -6,6 +6,8 @@ from plotly import graph_objs as go
 from plotly.colors import DEFAULT_PLOTLY_COLORS
 from tqdm.auto import tqdm
 
+from ml_inspector.utils import remove_outliers
+
 
 def select_feature_values(X, feature, max_nb_points):
     """Returns a list of values for the selected feature. If the feature is numerical
@@ -326,29 +328,6 @@ def partial_dependence_plot_layout(feature):
         legend={"orientation": "h", "y": 1.1},
     )
     return layout
-
-
-def remove_outliers(series, q_min=0.01, q_max=0.99, sigma_factor=0):
-    """Removes the outliers from a pandas Series by selecting the values
-    between a minimum and maximum quantiles to which can be added a
-    number of standard deviations.
-
-    :param pandas.Series series:
-        The pandas Series for which to remove the outliers.
-    :param float q_min:
-        The lower quantile below which to filter values.
-    :param float q_max:
-        The higher quantile above which to filter values.
-    :param float sigma_factor:
-        The number of standard deviations to include above and below the higher
-        and lower quantiles when filtering the data.
-
-    :returns pandas.Series
-        The pandas Series without its outliers.
-    """
-    lower_limit = series.quantile(q_min) - sigma_factor * series.std()
-    upper_limit = series.quantile(q_max) + sigma_factor * series.std()
-    return series[series.between(lower_limit, upper_limit)].copy()
 
 
 def add_feature_selection_button(fig, X, max_sample):
