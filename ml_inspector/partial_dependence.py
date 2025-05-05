@@ -145,7 +145,7 @@ def plot_partial_dependence(
     """
     plot_data = []
     visible = True
-    if features is not None:
+    if features is None:
         features = X.columns
     for feature in tqdm(features, desc="Calculating partial dependence"):
         feature_values, all_predictions, all_impacts = partial_dependence(
