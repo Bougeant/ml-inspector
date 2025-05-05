@@ -1,5 +1,9 @@
 from .calibration_curves import plot_calibration_curves
 from .confusion_matrix import plot_confusion_matrix
+from .feature_distribution.classification import (
+    plot_classification_features_distribution,
+)
+from .feature_distribution.regression import plot_regression_features_distribution
 from .feature_importance import plot_feature_importance
 from .gain_curves import plot_gain_curves
 from .learning_curves import plot_learning_curves
@@ -18,4 +22,6 @@ __all__ = [
     "plot_classification_predictions",
     "plot_roc_curves",
     "plot_feature_importance",
+    "plot_classification_features_distribution",
+    "plot_regression_features_distribution",
 ]

@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.16.4
+      jupytext_version: 1.17.1
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -22,7 +22,7 @@ jupyter:
 
 ```python
 import pandas as pd
-from sklearn.datasets import load_breast_cancer
+from sklearn.datasets import fetch_openml
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_predict
@@ -33,26 +33,37 @@ from ml_inspector import *
 ## Load classification dataset
 
 ```python
-dataset = load_breast_cancer()
+dataset = fetch_openml(name='diabetes', version=5)
 ```
 
 ```python
-X = pd.DataFrame(data=dataset["data"], columns=dataset["feature_names"])
+df = pd.DataFrame(data=dataset["data"], columns=dataset["feature_names"])
+df["Outcome"] = df["Outcome"].astype(int)
 ```
 
 ```python
-y = pd.Series(dataset["target"])
+X = df.drop(columns=["Outcome"])
 ```
 
 ```python
-class_names = {i: str(c) for i, c in enumerate(dataset["target_names"])}
+y = df["Outcome"]
+```
+
+```python
+class_names = {0: "No Diabetes", 1: "Diabetes"}
 class_names
+```
+
+## Exploratory Data Analysis
+
+```python
+plot_classification_features_distribution(df, features=X.columns, target="Outcome", class_names=class_names)
 ```
 
 ## Train binary classification model
 
 ```python
-rf = RandomForestClassifier(n_estimators=20, max_depth=5, min_samples_leaf=5)
+rf = RandomForestClassifier(n_estimators=20, max_depth=4, min_samples_leaf=5)
 ```
 
 ```python
@@ -63,14 +74,14 @@ rf.fit(X, y)
 
 ```python
 y_pred = {
-    "Training": rf.predict(X), 
+    "Training": rf.predict(X),
     "Cross-Validation": cross_val_predict(rf, X, y, cv=5)
 }
 ```
 
 ```python
 y_prob = {
-    "Training": rf.predict_proba(X), 
+    "Training": rf.predict_proba(X),
     "Cross-Validation": cross_val_predict(rf, X, y, cv=5, method="predict_proba")
 }
 ```
@@ -105,6 +116,12 @@ plot_confusion_matrix(y, y_pred["Cross-Validation"], class_names)
 plot_classification_predictions(y, y_prob["Cross-Validation"], class_names, decision_threshold=0.5, points="all")
 ```
 
+## Feature importance
+
+```python
+plot_feature_importance(rf, X, y, scoring="roc_auc", importance_type="removal", max_nb=20)
+```
+
 ## Class calibration curves
 
 ```python
@@ -120,7 +137,7 @@ plot_learning_curves(rf, X, y, scoring="roc_auc")
 ## Partial dependence
 
 ```python
-plot_partial_dependence(rf, X, "worst concavity")
+plot_partial_dependence(rf, X, class_names=class_names)
 ```
 
 ```python
