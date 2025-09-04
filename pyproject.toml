@@ -1,6 +1,6 @@
 [project]
 name = "ml-inspector"
-version = "0.2.0"
+version = "0.3.0"
 description = "User friendly tools to understand machine learning models"
 authors = [{ name="Olivier Bougeant", email="olivierbougeant@gmail.com" }]
 readme = "README.md"
