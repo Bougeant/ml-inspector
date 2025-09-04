@@ -143,10 +143,10 @@ def continuous_class_distribution(
     data_bins = pd.cut(df[column], bins=x_bins, include_lowest=True)
     df_class = df[df[target] == cl]
     dist = df_class.groupby(data_bins, observed=False)[target].count() / len(df_class)
+    round_int = int(np.log10(n_bins / (x_bins[-1] - x_bins[0]))) + 1
     return go.Bar(
-        x=x_bins,
+        x=x_bins.round(round_int),
         y=dist.values,
-        width=x_bins[1] - x_bins[0],
         marker={"color": color},
         opacity=0.4,
         legendgroup=class_name,
@@ -181,10 +181,10 @@ def continuous_class_probability(
     avg_prob = df.groupby(data_bins, observed=False)[target].apply(
         lambda x: np.mean(x == cl)
     )
+    round_int = int(np.log10(n_bins / (x_bins[-1] - x_bins[0]))) + 1
     return go.Bar(
-        x=x_bins,
+        x=x_bins.round(round_int),
         y=avg_prob.values,
-        width=x_bins[1] - x_bins[0],
         base=base,
         marker={"color": color},
         opacity=0.4,
@@ -336,6 +336,7 @@ def feature_layout(df, column, type="continuous", n_bins=None):
         width=1000,
         height=1000,
         template="plotly_white",
+        bargap=0,
         xaxis={"title": columns_name},
         yaxis={"title": "Distribution", "domain": [0.55, 1.0]},
         xaxis2={"title": columns_name, "anchor": "y2"},
