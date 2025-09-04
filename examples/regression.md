@@ -45,7 +45,11 @@ dataset.keys()
 ```
 
 ```python
-df = pd.DataFrame(data=dataset["data"], columns=dataset["feature_names"])
+features = dataset["feature_names"]
+```
+
+```python
+df = pd.DataFrame(data=dataset["data"], columns=features)
 df["target"] = dataset["target"]
 ```
 
@@ -61,7 +65,7 @@ df["persons_per_household"] = df["population"] / df["households"]
 ```
 
 ```python
-X = df.drop(columns=["target"])
+X = df[features]
 ```
 
 ```python
@@ -71,7 +75,7 @@ y = df["target"]
 ## Exploratory Data Analysis
 
 ```python
-plot_regression_features_distribution(df, features=X.columns.drop("ocean_proximity"), target="target")
+plot_regression_features_distribution(df, features=features, target="target")
 ```
 
 ## Train binary classification model
@@ -124,25 +128,19 @@ plot_regression_predictions(y_true=y, y_pred=y_pred, show_density=True)
 ## Feature importance
 
 ```python
-plot_feature_importance(rf, X, y, scoring="roc_auc", importance_type="removal", max_nb=20)
-```
-
-## Class calibration curves
-
-```python
-plot_calibration_curves(y, y_prob["Cross-Validation"], class_names, n_bins=10)
+plot_feature_importance(pipeline, X, y, scoring="r2", importance_type="removal", max_nb=20)
 ```
 
 ## Learning curve
 
 ```python
-plot_learning_curves(rf, X, y, scoring="roc_auc")
+plot_learning_curves(pipeline, X, y, scoring="r2")
 ```
 
 ## Partial dependence
 
 ```python
-plot_partial_dependence(rf, X, class_names=class_names)
+plot_partial_dependence(pipeline, X)
 ```
 
 ```python
