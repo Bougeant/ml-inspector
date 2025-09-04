@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
-
-"""Functions to display the distribution of features for machine learning models."""
+"""Functions to display the distribution of features for a classification model."""
 
 import numpy as np
 import pandas as pd
@@ -12,40 +10,11 @@ from tqdm.auto import tqdm
 from ml_inspector.utils import remove_outliers
 
 
-def add_feature_selection_button(fig, X, offset):
-    buttons = [
-        {
-            "args": [
-                {"visible": [c == col for c in X.columns for _ in range(offset)]},
-                {"xaxis.title.text": col, "xaxis2.title.text": col},
-            ],
-            "label": col,
-            "method": "update",
-        }
-        for col in X.columns
-    ]
-    fig.update_layout(
-        updatemenus=[
-            dict(
-                buttons=buttons,
-                direction="down",
-                pad={"r": 10, "t": 10},
-                showactive=True,
-                x=0,
-                xanchor="left",
-                y=1.3,
-                yanchor="top",
-            ),
-        ]
-    )
-    return fig
-
-
 def plot_classification_features_distribution(
     df, features, target, class_names=None, max_cat=20, max_bins=50
 ):
-    """Displays the distribution of continuous and categorical features in the
-    pandas DataFrame for each class and saves them if a path is specified.
+    """Displays the distribution of continuous and categorical features as a function
+    of a categorical target variable for classification tasks.
 
     Args:
         df (pd.DataFrame): The DataFrame containing the features to display.
@@ -71,7 +40,7 @@ def plot_classification_features_distribution(
             data = discrete_feature(df, feature, target, class_names, max_cat, visible)
         plot_data.extend(data)
         visible = False
-    layout = feature_layout(df, features[0], type="continuous", n_bins=1)
+    layout = feature_layout(features[0])
     fig = go.Figure(data=plot_data, layout=layout)
     fig = add_feature_selection_button(
         fig, df[features], offset=2 * df[target].nunique()
@@ -313,7 +282,7 @@ def discrete_class_probability(
     )
 
 
-def feature_layout(df, column, type="continuous", n_bins=None):
+def feature_layout(column):
     """Generates the plotly layout for the classification feature distribution plot.
 
     :param pandas.DataFrame df:
@@ -342,3 +311,32 @@ def feature_layout(df, column, type="continuous", n_bins=None):
         xaxis2={"title": columns_name, "anchor": "y2"},
         yaxis2={"title": "Probability", "domain": [0, 0.45]},
     )
+
+
+def add_feature_selection_button(fig, X, offset):
+    buttons = [
+        {
+            "args": [
+                {"visible": [c == col for c in X.columns for _ in range(offset)]},
+                {"xaxis.title.text": col, "xaxis2.title.text": col},
+            ],
+            "label": col,
+            "method": "update",
+        }
+        for col in X.columns
+    ]
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                buttons=buttons,
+                direction="down",
+                pad={"r": 10, "t": 10},
+                showactive=True,
+                x=0,
+                xanchor="left",
+                y=1.3,
+                yanchor="top",
+            ),
+        ]
+    )
+    return fig
