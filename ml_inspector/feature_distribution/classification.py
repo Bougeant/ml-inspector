@@ -112,7 +112,7 @@ def continuous_class_distribution(
     data_bins = pd.cut(df[column], bins=x_bins, include_lowest=True)
     df_class = df[df[target] == cl]
     dist = df_class.groupby(data_bins, observed=False)[target].count() / len(df_class)
-    round_int = int(np.log10(n_bins / (x_bins[-1] - x_bins[0]))) + 1
+    round_int = int(np.log10(n_bins / (1 + x_bins[-1] - x_bins[0]))) + 1
     return go.Bar(
         x=x_bins.round(round_int),
         y=dist.values,
@@ -150,7 +150,7 @@ def continuous_class_probability(
     avg_prob = df.groupby(data_bins, observed=False)[target].apply(
         lambda x: np.mean(x == cl)
     )
-    round_int = int(np.log10(n_bins / (x_bins[-1] - x_bins[0]))) + 1
+    round_int = int(np.log10(n_bins / (1 + x_bins[-1] - x_bins[0]))) + 1
     return go.Bar(
         x=x_bins.round(round_int),
         y=avg_prob.values,
