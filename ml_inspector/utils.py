@@ -1,4 +1,4 @@
-def remove_outliers(series, q_min=0.01, q_max=0.99, sigma_factor=0):
+def remove_outliers(series, q_min=0.01, q_max=0.99, sigma_factor=1):
     """Removes the outliers from a pandas Series by selecting the values
     between a minimum and maximum quantiles to which can be added a
     number of standard deviations.
